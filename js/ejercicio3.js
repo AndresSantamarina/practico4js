@@ -2,30 +2,35 @@
 3-Escribe una clase que permita crear distintos objetos “rectángulos”, con las propiedades de alto y ancho, mas los métodos necesarios para modificar y mostrar sus propiedades, calcular el perímetro y el área
 */
 
-class Geometria{
+class Rectangulo{
     constructor(alto, ancho){
+        this._alto = alto;
+        this._ancho = ancho;
+    }
+    get alto(){
+        return this._alto;
+    }
+    get ancho(){
+        return this._ancho;
+    }
+    set alto(nuevoAlto){
+        if (Number.isInteger(nuevoAlto) && nuevoAlto > 0){
+            this._alto = nuevoAlto;
+        }else {
+            alert('Ingrese un valor válido')
+        }
+    }
+    set ancho(nuevoAncho){
+        if (Number.isInteger(nuevoAncho) && nuevoAncho > 0){
+            this._ancho = nuevoAncho;
+        }else {
+            alert('Ingrese un valor válido')
+        }
+    }
+
+    modificarDatos(alto, ancho){
         this.alto = alto;
         this.ancho = ancho;
-    }
-    get _alto(){
-        return this.alto;
-    }
-    get _ancho(){
-        return this.ancho;
-    }
-    set _alto(nuevoAlto){
-        if (Number.isInteger(nuevoAlto) && nuevoAlto > 0){
-            this.alto = nuevoAlto;
-        }else {
-            alert('Ingrese un valor válido')
-        }
-    }
-    set _ancho(nuevoAncho){
-        if (Number.isInteger(nuevoAncho) && nuevoAncho > 0){
-            this.ancho = nuevoAncho;
-        }else {
-            alert('Ingrese un valor válido')
-        }
     }
 
     mostrarDatos(){
@@ -46,7 +51,11 @@ class Geometria{
     }
 }
 
-const rectangulo = new Geometria(parseInt(prompt('Ingrese el alto del rectángulo')), parseInt(prompt('Ingrese el ancho del rectángulo')));
-rectangulo.mostrarDatos();
-rectangulo.calcularPerimetro();
-rectangulo.calcularArea();
+//He isntanciado el nuevo rectangulo con un valor fijo
+const nuevoRectangulo = new Rectangulo(2, 1);
+
+//No sé por qué las validaciones se dan después de los dos prompt y no después de cada uno
+nuevoRectangulo.modificarDatos(parseInt(prompt('Alto')), parseInt(prompt('Ancho')));
+nuevoRectangulo.mostrarDatos();
+nuevoRectangulo.calcularPerimetro();
+nuevoRectangulo.calcularArea();
