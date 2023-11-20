@@ -19,88 +19,131 @@ Crea un menú con opciones que serán seleccionadas por el usuario usando un pro
 */
 
 class Contacto {
-    constructor(nombre, telefono){
+    constructor(nombre, telefono) {
         this._nombre = nombre;
         this._telefono = telefono;
     }
 
-    get nombre(){
+    get nombre() {
         return this._nombre;
     }
-    get telefono(){
+    get telefono() {
         return this._telefono;
     }
-    set nombre(nuevoNombre){
+    set nombre(nuevoNombre) {
         this._nombre = nuevoNombre;
     }
-    set telefono(nuevoTelefono){
+    set telefono(nuevoTelefono) {
         this._telefono = nuevoTelefono;
     }
 }
 
 class Agenda {
-    constructor(tamanio = 10){
+    constructor(tamanio = 10) {
         this._contactos = [];
         this._tamanioMaximo = tamanio;
     }
 
-    get contactos(){
+    get contactos() {
         return this._contactos;
     }
-    get tamanioMaximo(){
+    get tamanioMaximo() {
         return this._tamanioMaximo;
     }
-    set contactos(nuevoContactos){
+    set contactos(nuevoContactos) {
         this._contactos = nuevoContactos;
     }
-    set tamanioMaximo(nuevoTamanioMaximo){
+    set tamanioMaximo(nuevoTamanioMaximo) {
         this._tamanioMaximo = nuevoTamanioMaximo;
     }
-
-    aniadirContacto(contacto){
-        this.contactos.push(contacto);
+    
+    //Me falta validar que no se ingresen contactos repetidos, le estoy pasando un objeto como parámetro y necesito comparar los nombres como en existeContacto
+    aniadirContacto(contacto) {
+            this.contactos.push(contacto);
     }
 
-    existeContacto(contacto){
-        if(this.contactos.nombre === contacto.nombre){
+    existeContacto(nombre) {
+        if (this.contactos.find(contacto => contacto.nombre === nombre)) {
             alert('El contacto ya existe en la agenda')
-        }else{
+        } else {
             alert('El contacto no existe')
         }
     }
 
-    listarContactos(){
-        for ( let i=0; i<this.contactos.length;i++){
-            document.write(`<ul>
-            <li>Nombre: ${this.contactos}</li>
-            </ul>`)
+    listarContactos() {
+        if (this.contactos.length > 0) {
+            this.contactos.forEach(contacto => {
+                alert(`Nombre: ${contacto.nombre} | Teléfono: ${contacto.telefono}`);
+            })
+        } else {
+            alert('No hay contactos')
         }
     }
 
-    buscarContacto(nombre){
-
+    buscarContacto(nombre) {
+        const contactoEncontrado = this.contactos.find(contacto => contacto.nombre === nombre)
+        if (contactoEncontrado) {
+            alert(`El número de teléfono del contacto ${contactoEncontrado.nombre} es ${contactoEncontrado.telefono}`)
+        } else {
+            alert('El contacto buscado no existe')
+        }
     }
 
-    eliminarContacto(contacto){
-
+    eliminarContacto(indice) {
+        if (indice !== -1) {
+            this.contactos.pop(indice);
+            alert('El contacto ha sido eliminado con éxito')
+        } else {
+            alert('Índice de contacto incorrecto')
+        }
     }
 
-    agendaLlena(){
-        if(this.contactos.length >= this.tamanioMaximo){
+    agendaLlena() {
+        if (this.contactos.length >= this.tamanioMaximo) {
             alert('La agenda está llena')
-        }else{
+        } else {
             alert('La agenda tiene espacio')
         }
     }
 
-    huecosLibres(){
+    huecosLibres() {
         const espacioLibre = this.tamanioMaximo - this.contactos.length;
         alert(`Queda/n ${espacioLibre} espacio/s libre/s`)
     }
 }
 
 const agenda = new Agenda()
+let salir = false;
 
-agenda.aniadirContacto(new Contacto('Andrés',123456789));
-console.log(agenda.contactos)
-agenda.listarContactos()
+while (!salir) {
+    const opcion = parseInt(prompt("Seleccione una opción: 1- Añadir contacto, 2- Ver si existe el contacto, 3- Buscar contacto, 4- Listar los contactos, 5- Eliminar un contacto, 6- Ver si la agenda está llena, 7- Ver el espacio libre en la agenda, 8-Salir"))
+
+    switch (opcion) {
+        case 1:
+            agenda.aniadirContacto(new Contacto(prompt('Ingrese un nombre'), parseInt(prompt('Ingrese un teléfono'))));
+            break;
+        case 2:
+            agenda.existeContacto(prompt('Ingrese el nombre del contacto'));
+            break;
+        case 3:
+            agenda.buscarContacto(prompt('Ingrese el contacto a buscar'));
+            break;
+        case 4:
+            agenda.listarContactos();
+            break;
+        case 5:
+            agenda.eliminarContacto(parseInt(prompt('Ingrese el índice del contacto a eliminar')));
+            break;
+        case 6:
+            agenda.agendaLlena();
+            break;
+        case 7:
+            agenda.huecosLibres();
+            break;
+        case 8:
+            salir = true;
+            break;
+        default:
+            alert('Ingrese una opción válida');
+    }
+}
